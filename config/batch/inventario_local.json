@@ -1,0 +1,38 @@
+{
+  "datasource": "farmia",
+  "dataset": "inventario_local",
+  "dataset_name": "inventario_local",
+  "format": "json",
+  "landing_subdir": "inventario_local",
+  "raw_subdir": "inventario_local",
+  "bronze_table": "farmia_bronze.inventario_local",
+  "bronze_subdir": "inventario_local",
+  "checkpoint_subdir": "inventario_local",
+  "partition_columns": ["store_id"],
+  "source": {
+    "format": "cloudFiles",
+    "options": {
+      "cloudFiles.format": "json",
+      "cloudFiles.inferColumnTypes": "true",
+      "cloudFiles.schemaEvolutionMode": "addNewColumns",
+      "multiline": "true"
+    },
+    "path": "data/landing/inventario_local"
+  },
+  "sink": {
+    "layer": "bronze",
+    "format": "delta",
+    "options": {
+      "mergeSchema": "true"
+    },
+    "partition_columns": ["store_id"],
+    "table": "farmia_bronze.inventario_local",
+    "path": "data/bronze/inventario_local"
+  },
+  "expected_schema": [
+    {"name": "store_id", "type": "string", "nullable": false},
+    {"name": "product_id", "type": "string", "nullable": false},
+    {"name": "stock_level", "type": "integer", "nullable": false},
+    {"name": "last_updated", "type": "string", "nullable": false}
+  ]
+}

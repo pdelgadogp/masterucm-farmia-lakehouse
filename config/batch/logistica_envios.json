@@ -1,0 +1,41 @@
+{
+  "datasource": "farmia",
+  "dataset": "logistica_envios",
+  "dataset_name": "logistica_envios",
+  "format": "csv",
+  "landing_subdir": "logistica_envios",
+  "raw_subdir": "logistica_envios",
+  "bronze_table": "farmia_bronze.logistica_envios",
+  "bronze_subdir": "logistica_envios",
+  "checkpoint_subdir": "logistica_envios",
+  "partition_columns": ["carrier"],
+  "source": {
+    "format": "cloudFiles",
+    "options": {
+      "cloudFiles.format": "csv",
+      "cloudFiles.inferColumnTypes": "true",
+      "cloudFiles.schemaEvolutionMode": "addNewColumns",
+      "header": "true",
+      "sep": ","
+    },
+    "path": "data/landing/logistica_envios"
+  },
+  "sink": {
+    "layer": "bronze",
+    "format": "delta",
+    "options": {
+      "mergeSchema": "true"
+    },
+    "partition_columns": ["carrier"],
+    "table": "farmia_bronze.logistica_envios",
+    "path": "data/bronze/logistica_envios"
+  },
+  "expected_schema": [
+    {"name": "shipment_id", "type": "string", "nullable": false},
+    {"name": "order_id", "type": "string", "nullable": false},
+    {"name": "carrier", "type": "string", "nullable": false},
+    {"name": "status", "type": "string", "nullable": false},
+    {"name": "departure_date", "type": "string", "nullable": true},
+    {"name": "delivery_date_estimated", "type": "string", "nullable": true}
+  ]
+}

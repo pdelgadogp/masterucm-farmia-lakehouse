@@ -1,0 +1,31 @@
+{
+  "datasource": "farmia",
+  "dataset": "eventos_clientes",
+  "dataset_name": "eventos_clientes",
+  "message_format": "json",
+  "topic_pattern": "farmia.events.customers.*",
+  "bronze_table": "farmia_bronze.eventos_clientes",
+  "bronze_subdir": "eventos_clientes",
+  "checkpoint_subdir": "eventos_clientes",
+  "partition_columns": ["action"],
+  "source": {
+    "format": "kafka",
+    "options": {
+      "subscribePattern": "farmia.events.customers.*",
+      "startingOffsets": "earliest",
+      "failOnDataLoss": "false"
+    },
+    "key_format": "string",
+    "value_format": "json",
+    "json_schema": "event_id string, user_id string, action string, device string, timestamp string"
+  },
+  "sink": {
+    "layer": "bronze",
+    "format": "delta",
+    "options": {
+      "mergeSchema": "true"
+    },
+    "partition_columns": ["action"],
+    "table": "farmia_bronze.eventos_clientes"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "datasource": "farmia",
+  "dataset": "ecommerce_ventas",
+  "dataset_name": "ecommerce_ventas",
+  "format": "csv",
+  "landing_subdir": "ecommerce_ventas",
+  "raw_subdir": "ecommerce_ventas",
+  "bronze_table": "farmia_bronze.ecommerce_ventas",
+  "bronze_subdir": "ecommerce_ventas",
+  "checkpoint_subdir": "ecommerce_ventas",
+  "partition_columns": ["fecha_pedido"],
+  "source": {
+    "format": "cloudFiles",
+    "options": {
+      "cloudFiles.format": "csv",
+      "cloudFiles.inferColumnTypes": "true",
+      "cloudFiles.schemaEvolutionMode": "addNewColumns",
+      "header": "true",
+      "sep": ","
+    },
+    "path": "data/landing/ecommerce_ventas"
+  },
+  "sink": {
+    "layer": "bronze",
+    "format": "delta",
+    "options": {
+      "mergeSchema": "true"
+    },
+    "partition_columns": ["fecha_pedido"],
+    "table": "farmia_bronze.ecommerce_ventas",
+    "path": "data/bronze/ecommerce_ventas"
+  },
+  "expected_schema": [
+    {"name": "order_id", "type": "string", "nullable": false},
+    {"name": "cliente_id", "type": "string", "nullable": false},
+    {"name": "producto_id", "type": "string", "nullable": false},
+    {"name": "cantidad", "type": "integer", "nullable": true},
+    {"name": "precio_unitario", "type": "double", "nullable": true},
+    {"name": "total_pedido", "type": "double", "nullable": true},
+    {"name": "fecha_pedido", "type": "date", "nullable": false},
+    {"name": "canal_venta", "type": "string", "nullable": true}
+  ]
+}

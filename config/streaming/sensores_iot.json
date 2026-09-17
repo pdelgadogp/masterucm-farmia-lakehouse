@@ -1,0 +1,31 @@
+{
+  "datasource": "farmia",
+  "dataset": "sensores_iot",
+  "dataset_name": "sensores_iot",
+  "message_format": "json",
+  "topic_pattern": "farmia.iot.sensors.*",
+  "bronze_table": "farmia_bronze.sensores_iot",
+  "bronze_subdir": "sensores_iot",
+  "checkpoint_subdir": "sensores_iot",
+  "partition_columns": ["sensor_id"],
+  "source": {
+    "format": "kafka",
+    "options": {
+      "subscribePattern": "farmia.iot.sensors.*",
+      "startingOffsets": "earliest",
+      "failOnDataLoss": "false"
+    },
+    "key_format": "string",
+    "value_format": "json",
+    "json_schema": "sensor_id string, temperature double, humidity_soil double, soil_ph double, timestamp string"
+  },
+  "sink": {
+    "layer": "bronze",
+    "format": "delta",
+    "options": {
+      "mergeSchema": "true"
+    },
+    "partition_columns": ["sensor_id"],
+    "table": "farmia_bronze.sensores_iot"
+  }
+}

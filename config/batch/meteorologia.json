@@ -1,0 +1,41 @@
+{
+  "datasource": "farmia",
+  "dataset": "meteorologia",
+  "dataset_name": "meteorologia",
+  "format": "csv",
+  "landing_subdir": "meteorologia",
+  "raw_subdir": "meteorologia",
+  "bronze_table": "farmia_bronze.meteorologia",
+  "bronze_subdir": "meteorologia",
+  "checkpoint_subdir": "meteorologia",
+  "partition_columns": ["forecast_date"],
+  "source": {
+    "format": "cloudFiles",
+    "options": {
+      "cloudFiles.format": "csv",
+      "cloudFiles.inferColumnTypes": "true",
+      "cloudFiles.schemaEvolutionMode": "addNewColumns",
+      "header": "true",
+      "sep": ","
+    },
+    "path": "data/landing/meteorologia"
+  },
+  "sink": {
+    "layer": "bronze",
+    "format": "delta",
+    "options": {
+      "mergeSchema": "true"
+    },
+    "partition_columns": ["forecast_date"],
+    "table": "farmia_bronze.meteorologia",
+    "path": "data/bronze/meteorologia"
+  },
+  "expected_schema": [
+    {"name": "station_id", "type": "string", "nullable": false},
+    {"name": "region", "type": "string", "nullable": false},
+    {"name": "temperature", "type": "double", "nullable": true},
+    {"name": "precipitation_mm", "type": "double", "nullable": true},
+    {"name": "wind_speed_kmh", "type": "double", "nullable": true},
+    {"name": "forecast_date", "type": "string", "nullable": false}
+  ]
+}
